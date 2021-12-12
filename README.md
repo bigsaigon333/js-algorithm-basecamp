@@ -90,3 +90,12 @@
 
 - [A32 정수 삼각형](/src/js-for-coding-test/PART-03/16-다이나믹_프로그래밍-문제/32.ts)
 - [A33 퇴사](/src/js-for-coding-test/PART-03/16-다이나믹_프로그래밍-문제/33.ts)
+
+## 9주차 최단 경로
+
+- 2021-11-22 Mon ~ 2021-11-28 Sun
+
+### 이코테 PART 03 17장 최단 경로 문제
+
+- [A37 플로이드](/src/js-for-coding-test/PART-03/17-최단_경로-문제/37.ts)
+- [A39 화성 탐사](/src/js-for-coding-test/PART-03/17-최단_경로-문제/39.ts)
