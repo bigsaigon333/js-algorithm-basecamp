@@ -1,8 +1,11 @@
 const input = () => {
-  const [, line] = require("fs").readFileSync(0, "utf-8").trim().split("\n");
+  const [S, line] = require("fs").readFileSync(0, "utf-8").trim().split("\n");
 
-  return line.split(" ").map(Number);
+  return [Number(S), line.trim().split(" ").map(Number)];
 };
+
+const product = (nums, bool) =>
+  nums.reduce((acc, n, i) => acc + n * bool[i], 0);
 
 const permutation = (arr, level, cb) => {
   if (level === arr.length) {
@@ -17,28 +20,24 @@ const permutation = (arr, level, cb) => {
   permutation(arr, level + 1, cb);
 };
 
-const compute = (nums) => {
-  let sums = new Set();
+const compute = (N, S) => {
+  const s = new Set();
   const cb = (a) => {
-    let sum = 0;
-    for (let i = 0; i < a.length; i++) {
-      sum += a[i] * nums[i];
-    }
-
-    sums.add(sum);
+    s.add(product(a, S));
   };
 
-  permutation(Array(nums.length).fill(0), 0, cb);
+  permutation(Array(S.length).fill(0), 0, cb);
 
-  let i = 1;
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    if (!sums.has(i)) break;
+  const sorted = [...s].sort((a, b) => a - b);
+  const index = sorted.findIndex((n, i) => n !== i);
 
-    i++;
-  }
-
-  return i;
+  return index === -1 ? sorted.pop() + 1 : index;
 };
 
-console.log(compute(input()));
+console.log(compute(...input()));
+
+const assert = require("assert");
+
+assert.equal(compute(3, [5, 1, 2]), 4);
+assert.equal(compute(3, [2, 1, 4]), 8);
+assert.equal(compute(4, [2, 1, 2, 7]), 6);
