@@ -4,30 +4,26 @@ const input = () => {
   return [Number(S), line.trim().split(" ").map(Number)];
 };
 
-const product = (nums, bool) =>
-  nums.reduce((acc, n, i) => acc + n * bool[i], 0);
+const getAllCase = (S) => {
+  const s = new Set();
 
-const permutation = (arr, level, cb) => {
-  if (level === arr.length) {
-    cb(arr);
-    return;
-  }
+  const permutation = (arr, level, sum) => {
+    if (level === arr.length) {
+      s.add(sum);
+      return;
+    }
 
-  arr[level] = 0;
-  permutation(arr, level + 1, cb);
+    permutation(arr, level + 1, sum + arr[level]);
+    permutation(arr, level + 1, sum);
+  };
 
-  arr[level] = 1;
-  permutation(arr, level + 1, cb);
+  permutation(S, 0, 0);
+
+  return s;
 };
 
 const compute = (N, S) => {
-  const s = new Set();
-  const cb = (a) => {
-    s.add(product(a, S));
-  };
-
-  permutation(Array(S.length).fill(0), 0, cb);
-
+  const s = getAllCase(S);
   const sorted = [...s].sort((a, b) => a - b);
   const index = sorted.findIndex((n, i) => n !== i);
 
