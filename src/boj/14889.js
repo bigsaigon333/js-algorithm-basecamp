@@ -20,7 +20,9 @@ const compute = (N, S) => {
   };
 
   let min = Infinity;
-  const recursive = (K, ours, theirs) => {
+  const ours = [];
+  const theirs = [];
+  const recursive = (K) => {
     if (ours.length > N / 2 || theirs.length > N / 2) return;
     if (K === N) {
       const diff = Math.abs(sum(ours) - sum(theirs));
@@ -28,11 +30,16 @@ const compute = (N, S) => {
       return;
     }
 
-    recursive(K + 1, [...ours, K], [...theirs]);
-    recursive(K + 1, [...ours], [...theirs, K]);
+    ours.push(K);
+    recursive(K + 1);
+    ours.pop();
+
+    theirs.push(K);
+    recursive(K + 1);
+    theirs.pop();
   };
 
-  recursive(0, [], []);
+  recursive(0);
 
   return min;
 };
