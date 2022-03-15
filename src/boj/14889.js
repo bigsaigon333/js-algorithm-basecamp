@@ -7,34 +7,32 @@ const input = () => {
   return [Number(N), lines.map((line) => line.split(" ").map(Number))];
 };
 
-const recursive = (arr, N, K) => {
-  if (N < K) return [];
-  if (K === 1)
-    return Array(N)
-      .fill()
-      .map((_, i) => [arr[i]]);
-
-  return [
-    ...recursive(arr, N - 1, K),
-    ...recursive(arr, N - 1, K - 1).map((as) => [...as, arr[N - 1]]),
-  ];
-};
-
 const compute = (N, S) => {
-  const sum = (acc, [x, y]) => acc + S[x][y] + S[y][x];
+  const sum = (team) => {
+    let result = 0;
+    for (let i = 0; i < team.length; i++) {
+      for (let j = i + 1; j < team.length; j++) {
+        result += S[team[i]][team[j]] + S[team[j]][team[i]];
+      }
+    }
 
-  const all = Array(N)
-    .fill()
-    .map((_, i) => i);
+    return result;
+  };
 
   let min = Infinity;
-  for (const ours of recursive(all, N, N / 2)) {
-    const them = all.filter((n) => !ours.includes(n));
-    const ourSum = recursive(ours, N / 2, 2).reduce(sum, 0);
-    const theirSum = recursive(them, N / 2, 2).reduce(sum, 0);
-    const diff = Math.abs(ourSum - theirSum);
-    min = Math.min(min, diff);
-  }
+  const recursive = (K, ours, theirs) => {
+    if (ours.length > N / 2 || theirs.length > N / 2) return;
+    if (K === N) {
+      const diff = Math.abs(sum(ours) - sum(theirs));
+      min = Math.min(min, diff);
+      return;
+    }
+
+    recursive(K + 1, [...ours, K], [...theirs]);
+    recursive(K + 1, [...ours], [...theirs, K]);
+  };
+
+  recursive(0, [], []);
 
   return min;
 };
