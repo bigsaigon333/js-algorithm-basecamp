@@ -14,23 +14,23 @@ const sum = (arr) =>
 const compute = (N, A) => {
   let max = -Infinity;
 
-  const visited = [];
+  const visited = Array(N).fill(-1);
 
-  const rec = () => {
-    if (visited.length === N) {
+  const rec = (K) => {
+    if (K === N) {
       max = Math.max(max, sum(visited.map((i) => A[i])));
       return;
     }
 
-    for (let i = 0; i < A.length; i++) {
-      if (visited.includes(i)) continue;
-      visited.push(i);
-      rec();
-      visited.pop(i);
+    for (let i = 0; i < N; i++) {
+      if (visited[i] >= 0) continue;
+      visited[i] = K;
+      rec(K + 1);
+      visited[i] = -1;
     }
   };
 
-  rec();
+  rec(0);
 
   return max;
 };
