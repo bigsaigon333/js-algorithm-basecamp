@@ -12,14 +12,15 @@ const cut = (arr, h) =>
   arr.map((el) => Math.max(0, el - h)).reduce((a, b) => a + b, 0);
 
 const binarySearch = (arr, start, end, target) => {
-  if (start > end) return end;
+  while (start <= end) {
+    const mid = Math.floor((start + end) / 2);
+    const sum = cut(arr, mid);
 
-  const mid = Math.floor((start + end) / 2);
-  const sum = cut(arr, mid);
+    if (sum >= target) start = mid + 1;
+    else end = mid - 1;
+  }
 
-  return sum >= target
-    ? binarySearch(arr, mid + 1, end, target)
-    : binarySearch(arr, start, mid - 1, target);
+  return end;
 };
 
 const compute = (N, M, nums) => binarySearch(nums, 0, Math.max(...nums), M);
