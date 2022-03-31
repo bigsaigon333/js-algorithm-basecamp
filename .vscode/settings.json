@@ -6,5 +6,8 @@
     "source.fixAll.eslint": true
   },
   "prettier.enable": true,
-  "prettier.useEditorConfig": true
+  "prettier.useEditorConfig": true,
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  }
 }
