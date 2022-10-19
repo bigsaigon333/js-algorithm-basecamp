@@ -9,7 +9,7 @@ const compute = (word) => {
   const max = Math.max(...counts.values());
   const filtered = [...counts].filter(([, value]) => value === max);
 
-  return filtered.length >= 2 ? "?" : filtered[0][0].toUpperCase();
+  return filtered.length >= 2 ? "?" : filtered[0][0];
 };
 
 console.log(compute(input()));

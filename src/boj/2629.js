@@ -12,20 +12,22 @@ const tc = input[3].split(" ").map(Number);
 
 const MAX_WEIGHT = 500;
 
-const prev = Array(N * MAX_WEIGHT + 1).fill(false);
+const cache = Array(N * MAX_WEIGHT + 1).fill(false);
+cache[0] = true;
 
-for (let i = 0; i < N; i++) {
-  const curr = Array(N * MAX_WEIGHT + 1).fill(false);
-  curr[n[i]] = true;
-  for (let j = 1; j <= (i + 1) * MAX_WEIGHT; j++) {
-    if (!prev[j]) continue;
-    curr[Math.abs(j - n[i])] = true;
-    curr[j + n[i]] = true;
+const rec = (i, m) => {
+  if (i === N) {
+    return;
   }
 
-  for (let j = 0; j <= N * MAX_WEIGHT; j++) {
-    prev[j] = prev[j] || curr[j];
-  }
-}
+  if (cache[m]) return;
 
-console.log(tc.map((t) => (prev[t] ? "Y" : "N")).join(" "));
+  cache[m + n[i]] = true;
+  rec(i + 1, m + n[i]);
+  cache[Math.abs(m - n[i])] = true;
+  rec(i + 1, Math.abs(m - n[i]));
+  cache[m] = true;
+  rec(i + 1, m);
+};
+
+console.log(tc.map((t) => (cache[t] ? "Y" : "N")).join(" "));
